@@ -14,7 +14,7 @@ public:
 
     explicit StapelException(const char *const message="") :message(message) {}
 
-    const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
+    const char *what() const  override {
         return message;
     }
 };

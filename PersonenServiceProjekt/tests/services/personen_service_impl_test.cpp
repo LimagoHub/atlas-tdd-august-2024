@@ -8,7 +8,7 @@ TEST_F(personen_service_impl_test,speichern__vorname_zu_kurz__throws_personen_se
     try {
         // Arrange
         person invalidPerson{"J", "Doe"};
-
+        EXPECT_CALL(repoMock, save_or_update(_)).Times(0);
         // Act
         objectUnderTest.speichern(invalidPerson);
 
@@ -22,7 +22,7 @@ TEST_F(personen_service_impl_test,speichern__nachname_zu_kurz__throws_personen_s
     try {
         // Arrange
         person invalidPerson{"John", "D"};
-
+        EXPECT_CALL(repoMock, save_or_update(_)).Times(0);
         // Act
         objectUnderTest.speichern(invalidPerson);
 
@@ -36,6 +36,7 @@ TEST_F(personen_service_impl_test, speichern__Unerwuenschte_Person__throws_perso
     try {
         person invalidPerson{"John", "der Hunne"};
         EXPECT_CALL(blacklistMock, is_blacklisted(invalidPerson)).WillOnce(Return(true));
+        EXPECT_CALL(repoMock, save_or_update(_)).Times(0);
         objectUnderTest.speichern(invalidPerson);
         FAIL() << "Exception expected";
     } catch(const personen_service_exception &ex) {
@@ -71,6 +72,20 @@ TEST_F(personen_service_impl_test, speichern__happy_day__person_passed_to_repo) 
 
 }
 
+
+TEST_F(personen_service_impl_test, speichern__happy_day__person_passed_to_repo_overloaded) {
+    // Arrange
+    person captured_person{};
+    EXPECT_CALL(blacklistMock, is_blacklisted(_)).WillOnce(Return(false));
+    EXPECT_CALL(repoMock, save_or_update(_)).WillOnce(DoAll(SaveArg<0>(&captured_person)));
+
+    objectUnderTest.speichern("John","Doe");
+
+    EXPECT_THAT( captured_person.getVorname(), AnyOf(StartsWith("J"), StartsWith("M")));
+    EXPECT_THAT(captured_person.getNachname(), AnyOf(Eq("Doe"), Eq("Mustermann")));
+    EXPECT_THAT(captured_person.getId(), Not(IsEmpty()));
+
+}
 void personen_service_impl_test::SetUp() {
     ON_CALL(blacklistMock, is_blacklisted(_)).WillByDefault(Return(false));
 }

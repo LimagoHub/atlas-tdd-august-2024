@@ -48,11 +48,15 @@ public:
         }
     }
 
-
+    void speichern(std::string vorname, std::string nachname) override {
+        person neu{vorname, nachname};
+        neu.setId("UUID");
+        speichern(neu);
+    }
 
 
 private:
-    void speichernImpl(const person &person_) const {
+    void speichernImpl(person &person_) const {
         checkPerson(person_);
 
         repo.save_or_update(person_);

@@ -5,6 +5,7 @@
 #pragma once
 #include "../persistence/personen_repository.h"
 #include "personen_service.h"
+#include "blacklist_service.h"
 
 #include "personen_service_exception.h"
 
@@ -14,9 +15,9 @@ class personen_service_impl :public personen_service{
 public:
 
 
-    personen_service_impl(personen_repository &repo) :
-        repo(repo){}
-
+    personen_service_impl(personen_repository &repo, blacklist_service &blacklistService) :
+        repo(repo),
+        blacklistService(blacklistService) {}
 
     /*
  *	Vorname < 2 -> PSE
@@ -31,14 +32,46 @@ public:
  */
     void speichern(person &person_)   override{
 
-        if(person_.getVorname().length() < 2) throw personen_service_exception{"Vorname zu kurz"};
-        throw personen_service_exception{"Nachname zu kurz"};
+        try {
+            speichernImpl(person_);
+
+        }
+        catch(const personen_service_exception &e) {
+            throw e;
+        }
+        catch(const std::exception &e) {
+            throw personen_service_exception{"Ein Fehler ist aufgetreten"};
+        }
+
+        catch(...) {
+            throw personen_service_exception{"Ein Fehler ist aufgetreten"};
+        }
     }
 
 
+
+
 private:
+    void speichernImpl(const person &person_) const {
+        checkPerson(person_);
+
+        repo.save_or_update(person_);
+    }
+
+    void checkPerson(const person &person_) const {
+        validatePerson(person_);
+        businessCheck(person_);
+    }
+
+    void businessCheck(const person &person_) const { if (blacklistService.is_blacklisted(person_)) throw personen_service_exception{"Unerwuenschte Person"}; }
+
+    void validatePerson(const person &person_) const {
+        if (person_.getVorname().length() < 2) throw personen_service_exception{"Vorname zu kurz"};
+        if (person_.getNachname().length() < 2) throw personen_service_exception{"Nachname zu kurz"};
+    }
 
     personen_repository &repo;
+    blacklist_service & blacklistService;
 
 
 };

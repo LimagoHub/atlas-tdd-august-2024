@@ -14,6 +14,13 @@ add_executable(
 	Tag1_02SchweineProjekt 
 	source/main.cpp
 		source/tiere/Schwein.h
+		source/services/Dependency.h
+		source/services/DependencyImpl.h
+		source/services/MyServiceUsingDependency.h
+		source/services/MyServiceUsingDependency.h
+		source/services/Mult.h
+		source/services/MultImpl.h
+		source/services/MultOptimizer.h
 )
 
 

@@ -1,14 +1,14 @@
 #include <iostream>
-#include "DependencyImpl.h"
-#include "MyServiceUsingDependency.h"
+#include "services/DependencyImpl.h"
+#include "services/MyServiceUsingDependency.h"
 int main() {
-    /*
+
     DependencyImpl impl;
 
     MyServiceUsingDependency service{impl};
 
 
 
-	std::cout << service.bar() << std::endl;
-     */
+	service.f("Hallo") ;
+
 }

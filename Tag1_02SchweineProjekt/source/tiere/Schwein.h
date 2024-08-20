@@ -15,45 +15,46 @@ private:
     std::string name;
     int gewicht;
 
-    void setGewicht(int gewicht) {
+    void setGewicht(int gewicht) noexcept{
         Schwein::gewicht = gewicht;
     }
 
 public:
-    Schwein():Schwein{"nobody"} {}
+    inline static const int default_weight{10};
+    Schwein():Schwein{"Nobody"} {}
 
-    explicit Schwein(const std::string &name) :  gewicht(10) {
+    explicit Schwein(const std::string &name) :  gewicht(default_weight) {
         setName(name);
     }
 
 
-    const std::string &getName() const {
+    const std::string &getName() const noexcept{
         return name;
     }
 
     void setName(const std::string &name) {
-        if(name == "Elsa") throw std::invalid_argument("Falscher Name");
+        if(name == "Elsa") throw std::invalid_argument("Ungueltiger Name");
         Schwein::name = name;
     }
 
-    int getGewicht() const {
+    int getGewicht() const noexcept{
         return gewicht;
     }
 
-    void fuettern() {
+    void fuettern() noexcept{
         setGewicht(getGewicht() + 1);
     }
 
-    bool operator==(const Schwein &rhs) const {
+    bool operator==(const Schwein &rhs) const noexcept{
         return name == rhs.name &&
                gewicht == rhs.gewicht;
     }
 
-    bool operator!=(const Schwein &rhs) const {
+    bool operator!=(const Schwein &rhs) const noexcept{
         return !(rhs == *this);
     }
 
-    friend std::ostream &operator<<(std::ostream &os, const Schwein &schwein) {
+    friend std::ostream &operator<<(std::ostream &os, const Schwein &schwein) noexcept {
         os << "name: " << schwein.name << " gewicht: " << schwein.gewicht;
         return os;
     }

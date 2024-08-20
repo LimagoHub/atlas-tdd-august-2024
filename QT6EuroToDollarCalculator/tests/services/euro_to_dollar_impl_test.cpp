@@ -6,7 +6,7 @@
 TEST_F(euro_to_dollar_impl_test,convert__unexpectedErrorInExchangeRateService__throwsRuntime_exception ){
     try {
         EXPECT_CALL(exchange_rate_service_mock, get_rate_for(_)).WillOnce(Throw("Upps"));
-        object_under_test.convert(100);
+        auto result = object_under_test.convert(100);
         FAIL() << "Exception wurde erwartet";
     } catch(const std::runtime_error & ex){
         EXPECT_THAT(ex.what(), StrEq("Exchange Rate Service nicht erreichbar"));

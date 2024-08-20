@@ -13,11 +13,7 @@ enable_testing()
 add_executable(
 	StapelProjekt 
 	source/main.cpp
-		tests/collections/StapelTest.cpp
-		tests/collections/StapelTest.h
-		source/collections/Stapel.cpp
-		source/collections/Stapel.h
-
+		
 )
 
 

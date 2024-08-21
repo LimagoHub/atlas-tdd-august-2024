@@ -15,7 +15,9 @@ public:
 
 
 TEST(demo, mult_demo) {
-    EXPECT_GLOBAL_CALL(mult,mult(7.0,8.2)).WillOnce(Return(5.0));
-    Foo out;
-    out.bar();
+
+    const int result = 42;
+    EXPECT_GLOBAL_CALL(mult,mult(7.0,8.2)).WillOnce(Return(result));
+    Foo objectUnderTest;
+    objectUnderTest.bar();
 }

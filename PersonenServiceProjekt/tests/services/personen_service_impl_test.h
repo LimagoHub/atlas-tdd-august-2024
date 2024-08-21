@@ -31,7 +31,7 @@ protected:
     std::string expectedErrorMessage;
 
     void SetUp() override{
-
+        personen_service_impl_test::SetUp();
         std::tie<person, std::string>(invalidPerson, expectedErrorMessage) = GetParam();
 
     }

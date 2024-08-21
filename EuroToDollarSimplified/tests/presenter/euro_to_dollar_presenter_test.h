@@ -10,12 +10,3 @@
 
 using namespace testing;
 
-
-class euro_to_dollar_presenter_test: public Test {
-protected:
-    Mockeuro_to_dollar_calculator calculatorMock;
-    Mockeuro_to_dollar_view viewMock;
-    euro_to_dollar_presenter_impl objectUnderTest;
-
-    void SetUp() override;
-};

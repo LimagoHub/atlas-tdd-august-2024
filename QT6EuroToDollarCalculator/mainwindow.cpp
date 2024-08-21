@@ -62,5 +62,6 @@ void MainWindow::on_btn_ende_clicked()
 
 void MainWindow::on_txt_euro_textChanged(const QString &arg1)
 {
+    //presenter_->rechnen();
     presenter_->update_rechnen_action_state();
 }

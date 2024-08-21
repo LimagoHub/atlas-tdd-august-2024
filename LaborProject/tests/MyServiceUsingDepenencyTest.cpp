@@ -15,3 +15,7 @@ TEST_F(MyServiceUsingDepenencyTest, demo){
 
     EXPECT_THAT(result, Eq(10));
 }
+
+void MyServiceUsingDepenencyTest::SetUp() {
+    Test::SetUp();
+}
